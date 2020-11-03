@@ -1,7 +1,7 @@
 from app import app
 from models import db, ToDoList
 
-db.delete_all()
+db.drop_all()
 db.create_all()
 
 first = ToDoList(task="Clean stove", description="Needs to be washed down throughly.")

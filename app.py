@@ -4,7 +4,7 @@ from secrets import KEY
 
 app = Flask (__name__)
 app.config['SECRET_KEY'] = KEY
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres:///pet_agency'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres:///ToDoList'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = False
 
