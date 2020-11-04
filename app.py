@@ -10,3 +10,6 @@ app.config['SQLALCHEMY_ECHO'] = False
 
 connect_db(app)
 
+@app.route('/')
+def home():
+    render_template('home.html')
