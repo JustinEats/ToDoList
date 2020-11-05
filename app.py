@@ -1,5 +1,5 @@
-from flask import Flask, render_template, request
-from models import db, connect_db, ToDoList
+from flask import Flask, render_template, request, flash
+from models import db, connect_db, User, ToDoList
 from forms import RegisterUser, LoginUser, ToDoList
 from secrets import KEY
 
@@ -18,4 +18,12 @@ def home():
 @app.route('/signup')
 def signup():
     form = RegisterUser()
+    if form.validate_on_submit():
+        username = form.username.data
+        password = form.password.data
+        email = form.password.data
+        new_user = User.register(username, password, email)
+        db.session.add(new_user)
+        db.session.commit()
+        session["user_id"] = new_user.id
     return render_template('signup.html', form=form)

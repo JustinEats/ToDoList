@@ -7,9 +7,15 @@ db = SQLAlchemy()
 class User(db.Model):
     __tablename__ = "users"
     id=db.Column(db.Integer, primary_key=True, autoincrement=True)
-    username=db.Column(db.String(30), nullable=False, unique=True)
-    password=db.Column(db.String(30), nullable=False)
+    username=db.Column(db.String(length=30), nullable=False, unique=True)
+    password=db.Column(db.String(length=30), nullable=False)
     email=db.Column(db.Text, nullable=False)
+
+    @classmethod 
+    def register(cls, username, password, email):
+        hashed = bcrypt.generate_password_hash(password)
+        hashed_utf8 = hashed.decode('utf-8')
+        return cls(username=username, password=hashed_utf8, email=email)
 
     def __repr__(self):
         self = u
