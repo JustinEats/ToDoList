@@ -12,4 +12,4 @@ connect_db(app)
 
 @app.route('/')
 def home():
-    render_template('home.html')
+    return render_template('home.html')

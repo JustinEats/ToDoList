@@ -13,14 +13,14 @@ class User(db.Model):
 
     def __repr__(self):
         self = u
-        return f"<ToDoList {u.task}, {u.checked}>"
+        return f"<User {u.username}, {u.email}>"
 
 
 class ToDoList(db.Model):
     __tablename__ = "todos"
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     task = db.Column(db.Text, nullable=False)
-    user_id = db.Column(db.Integer, ForeignKey('users.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
     user = db.relationship('User', backref='todo')
 
