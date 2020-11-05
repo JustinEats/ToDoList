@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request
 from models import db, connect_db, ToDoList
+from forms import RegisterUser, LoginUser, ToDoList
 from secrets import KEY
 
 app = Flask (__name__)
@@ -13,3 +14,8 @@ connect_db(app)
 @app.route('/')
 def home():
     return render_template('home.html')
+
+@app.route('/signup')
+def signup():
+    form = RegisterUser()
+    return render_template('signup.html', form=form)
