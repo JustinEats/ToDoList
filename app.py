@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, flash
+from flask import Flask, render_template, flash, url_for
 from models import db, connect_db, User, ToDoList
 from forms import RegisterUser, LoginUser, ToDoList
 from secrets import KEY
@@ -15,7 +15,7 @@ connect_db(app)
 def home():
     return render_template('home.html')
 
-@app.route('/signup')
+@app.route('/signup', methods=['GET', 'POST'])
 def signup():
     form = RegisterUser()
     if form.validate_on_submit():
@@ -26,4 +26,15 @@ def signup():
         db.session.add(new_user)
         db.session.commit()
         session["user_id"] = new_user.id
+        # return redirect(url_for('user_profile', id=user.id))
     return render_template('signup.html', form=form)
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    form = LoginUser()
+    if form.validate_on_submit():
+        username = form.username.data
+        password = form.password.data
+        login_user = User.authenticate(username,password)
+        session['user_id'] = login_user.id
+    return render_template('login.html', form=form)
