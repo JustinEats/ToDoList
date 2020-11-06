@@ -1,15 +1,15 @@
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 
-bcrypt = Bcrypt()
 db = SQLAlchemy()
+bcrypt = Bcrypt()
 
 class User(db.Model):
     __tablename__ = "users"
     id=db.Column(db.Integer, primary_key=True, autoincrement=True)
     username=db.Column(db.String(length=30), nullable=False, unique=True)
-    password=db.Column(db.String(length=30), nullable=False)
-    email=db.Column(db.Text, nullable=False)
+    password=db.Column(db.String, nullable=False)
+    email=db.Column(db.Text, nullable=False, unique=True)
 
     @classmethod 
     def register(cls, username, password, email):

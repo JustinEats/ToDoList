@@ -1,4 +1,4 @@
-from flask import Flask, render_template, flash, url_for
+from flask import Flask, render_template, flash, url_for, session, redirect
 from models import db, connect_db, User, ToDoList
 from forms import RegisterUser, LoginUser, ToDoList
 from secrets import KEY
@@ -21,12 +21,12 @@ def signup():
     if form.validate_on_submit():
         username = form.username.data
         password = form.password.data
-        email = form.password.data
+        email = form.email.data
         new_user = User.register(username, password, email)
         db.session.add(new_user)
         db.session.commit()
         session["user_id"] = new_user.id
-        # return redirect(url_for('user_profile', id=user.id))
+        return redirect(url_for('user_profile', id=new_user.id))
     return render_template('signup.html', form=form)
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -37,4 +37,10 @@ def login():
         password = form.password.data
         login_user = User.authenticate(username,password)
         session['user_id'] = login_user.id
+        return redirect(url_for('user_profile', id=user.id))
     return render_template('login.html', form=form)
+
+@app.route('/account/<int:id>')
+def user_profile(id):
+    user = User.query.get_or_404(id)
+    return render_template('user-profile.html', user=user)
