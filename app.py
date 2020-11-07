@@ -41,7 +41,14 @@ def login():
         return redirect(url_for('user_profile', id=user.id))
     return render_template('login.html', form=form)
 
-@app.route('/account/<int:id>')
+@app.route('/account/<int:id>', methods=["GET", "POST"])
 def user_profile(id):
     user = User.query.get_or_404(id)
-    return render_template('user-profile.html', user=user)
+    form = ToDoList()
+    if form.validate_on_submit():
+        todo = form.todo.data
+        new_todo = ToDoList(task=todo, user_id=id)
+        db.session.add(new_todo)
+        db.session.commit()
+        return redirect(url_for('user_profile', id=user.id))
+    return render_template('user-profile.html', user=user, form=form)
