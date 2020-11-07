@@ -1,6 +1,6 @@
 from flask import Flask, render_template, flash, url_for, session, redirect
 from models import db, connect_db, User, ToDoList
-from forms import RegisterUser, LoginUser, ToDoList
+from forms import RegisterUser, LoginUser, ToDo
 from secrets import KEY
 
 app = Flask (__name__)
@@ -44,11 +44,12 @@ def login():
 @app.route('/account/<int:id>', methods=["GET", "POST"])
 def user_profile(id):
     user = User.query.get_or_404(id)
-    form = ToDoList()
+    todos = ToDoList.query.all()
+    form = ToDo()
     if form.validate_on_submit():
         todo = form.todo.data
         new_todo = ToDoList(task=todo, user_id=id)
         db.session.add(new_todo)
         db.session.commit()
         return redirect(url_for('user_profile', id=user.id))
-    return render_template('user-profile.html', user=user, form=form)
+    return render_template('user-profile.html', user=user, todos=todos, form=form)
