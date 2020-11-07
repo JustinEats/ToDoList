@@ -3,7 +3,13 @@
 {% block title %}Profile{% endblock %}
 
 {% block content %}
-<div>
-    <p>User here</p>
+<div class="container">
+    <h1 class="row justify-content-center">Account Information</h1>
+    <div class="row justify-content-center">
+        <div>
+        <p>Username: {{user.username}}</p>
+        <p>Email: {{user.email}}</p>
+        </div>
+    </div>
 </div>
 {% endblock %}

@@ -13,7 +13,8 @@ connect_db(app)
 
 @app.route('/')
 def home():
-    return render_template('home.html')
+    user = User.query.all()
+    return render_template('home.html', user=user)
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():

@@ -3,11 +3,18 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
+
 <div class="container">
     <div class="row justify-content-center">
-        <form>
+        {% if session["username"] %}
+        <form action="{{url_for('user_profile', id=user.id)}}">
             <button class="btn btn-primary">Create your To Do List</button>
         </form>
+        {% else %}
+        <form action="/signup">
+            <button class="btn btn-primary">Create your To Do List</button>
+        </form>
+        {% endif %}
     </div>
 </div>
 {% endblock %}
