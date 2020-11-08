@@ -1,3 +1,3 @@
 # ToDoList
 
-Basic To Do List using Python-Flask
+Login authentication/authorization required to create a list. 
