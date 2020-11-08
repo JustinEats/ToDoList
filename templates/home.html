@@ -6,10 +6,12 @@
 
 <div class="container">
     <div class="row justify-content-center">
-        {% if session["username"] %}
-        <form action="{{url_for('user_profile', id=user.id)}}">
+        {% if session["user_id"] %}
+        {% for u in user %}
+        <form action="{{url_for('user_profile', id=u.id)}}">
             <button class="btn btn-primary">Create your To Do List</button>
         </form>
+        {% endfor %}
         {% else %}
         <form action="/signup">
             <button class="btn btn-primary">Create your To Do List</button>
