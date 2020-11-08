@@ -37,8 +37,11 @@ def login():
         username = form.username.data
         password = form.password.data
         login_user = User.authenticate(username,password)
-        session['user_id'] = login_user.id
-        return redirect(url_for('user_profile', id=user.id))
+        if login_user:
+            session['user_id'] = login_user.id
+            return redirect(url_for('user_profile', id=login_user.id))
+        else:
+            flash('Invalid Username/Password')
     return render_template('login.html', form=form)
 
 @app.route('/account/<int:id>', methods=["GET", "POST"])
@@ -53,3 +56,8 @@ def user_profile(id):
         db.session.commit()
         return redirect(url_for('user_profile', id=user.id))
     return render_template('user-profile.html', user=user, todos=todos, form=form)
+
+@app.route('/logout')
+def logout_user(id):
+    session.pop('user_id')
+    return redirect('/')
