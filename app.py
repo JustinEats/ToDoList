@@ -58,6 +58,6 @@ def user_profile(id):
     return render_template('user-profile.html', user=user, todos=todos, form=form)
 
 @app.route('/logout')
-def logout_user(id):
+def logout_user():
     session.pop('user_id')
     return redirect('/')
