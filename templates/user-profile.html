@@ -41,7 +41,7 @@
     <ul class="row justify-content-center">
         {% for todo in todos %}
         <li>{{todo.task}} 
-            <form class="d-inline">
+            <form action="{{url_for('edit_todo', id=user.id)}}">
                 <button class="btn btn-success">Edit</button>
                 <button class="btn btn-danger">Delete</button>
             </form>

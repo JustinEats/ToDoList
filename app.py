@@ -61,3 +61,19 @@ def user_profile(id):
 def logout_user():
     session.pop('user_id')
     return redirect('/')
+
+@app.route('/todo/<int:id>/edit', methods=["GET", "POST"])
+def edit_todo(id): #add form/fix html
+    user = User.query.get_or_404(id)
+    todo_edit = ToDoList.query.get_or_404(id)
+    form = ToDo(obj=todo_edit)
+    if form.validate_on_submit():
+        todo_edit.task = form.todo.data
+        new_edit = ToDoList(task=todo_edit, user_id = id)
+        db.session.commit()
+        return redirect(url_for('user_profile', id=user.id))
+    return render_template('edit-todo.html', form=form)
+
+# @app.route('/todo/<int:id>/delete', methods=["POST"])
+# def delete_todo(id):
+#     return redirect(url_for('edit_todo', id=))
