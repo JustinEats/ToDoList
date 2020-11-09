@@ -36,11 +36,18 @@
     
     </div>  
 </div>
-<div class="container row justify-content-center">
-    <ul>
+<div class="container">
+    <div>
+    <ul class="row justify-content-center">
         {% for todo in todos %}
-        <li>{{todo.task}}</li>
+        <li>{{todo.task}} 
+            <form class="d-inline">
+                <button class="btn btn-success">Edit</button>
+                <button class="btn btn-danger">Delete</button>
+            </form>
+        </li>
         {% endfor %}
     </ul>
+    </div>
 </div>
 {% endblock %}
