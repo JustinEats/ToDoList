@@ -1,7 +1,8 @@
 from flask import Flask, render_template, flash, url_for, session, redirect
 from models import db, connect_db, User, ToDoList
-from forms import RegisterUser, LoginUser, ToDo
+from forms import RegisterUser, LoginUser, ToDoForm
 from secrets import KEY
+from flask_debugtoolbar import DebugToolbarExtension
 
 app = Flask (__name__)
 app.config['SECRET_KEY'] = KEY
@@ -10,6 +11,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = False
 
 connect_db(app)
+debug = DebugToolbarExtension(app)
 
 @app.route('/')
 def home():
@@ -48,7 +50,7 @@ def login():
 def user_profile(id):
     user = User.query.get_or_404(id)
     todos = ToDoList.query.all()
-    form = ToDo()
+    form = ToDoForm()
     if form.validate_on_submit():
         todo = form.todo.data
         new_todo = ToDoList(task=todo, user_id=id)
@@ -63,17 +65,20 @@ def logout_user():
     return redirect('/')
 
 @app.route('/todo/<int:id>/edit', methods=["GET", "POST"])
-def edit_todo(id): #add form/fix html
-    user = User.query.get_or_404(id)
+def edit_todo(id): 
     todo_edit = ToDoList.query.get_or_404(id)
-    form = ToDo(obj=todo_edit)
+    form = ToDoForm(obj=todo_edit)
     if form.validate_on_submit():
         todo_edit.task = form.todo.data
-        new_edit = ToDoList(task=todo_edit, user_id = id)
+        new_edit = ToDoList(task=todo_edit, user_id = session["user_id"])
         db.session.commit()
-        return redirect(url_for('user_profile', id=user.id))
+        return redirect(url_for('user_profile', id= session["user_id"]))
     return render_template('edit-todo.html', form=form)
 
-# @app.route('/todo/<int:id>/delete', methods=["POST"])
-# def delete_todo(id):
-#     return redirect(url_for('edit_todo', id=))
+@app.route('/todo/<int:id>/delete', methods=["POST"])
+def delete_todo(id):
+    todo = ToDoList.query.get_or_404(id)
+    db.session.delete(todo)
+    db.session.commit()
+    return redirect(url_for('user_profile', id=session["user_id"]))
+    # return render_template('user-profile.html')

@@ -11,5 +11,5 @@ class LoginUser(FlaskForm):
     username = StringField("Username:", validators=[InputRequired()])
     password = PasswordField("Password:", validators=[InputRequired()])
 
-class ToDo(FlaskForm):
+class ToDoForm(FlaskForm):
     todo = StringField("To do's:", validators=[InputRequired()])
