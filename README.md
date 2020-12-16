@@ -1,3 +1,3 @@
 # ToDoList
 
-Login authentication/authorization required to create a list. 
+Login authentication/authorization required to create your own list. 
